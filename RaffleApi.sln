@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.Aplication", "Raffle.Aplication\Raffle.Aplication.csproj", "{EB79FF26-FD33-4F28-B3ED-60858E2669D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.Aplication", "Raffle.Aplication\Raffle.Aplication.csproj", "{EB79FF26-FD33-4F28-B3ED-60858E2669D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.Domain", "Raffle.Domain\Raffle.Domain.csproj", "{D7BCD9CA-03DA-4B7F-AFAF-15213A95B6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.Domain", "Raffle.Domain\Raffle.Domain.csproj", "{D7BCD9CA-03DA-4B7F-AFAF-15213A95B6E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.Infrastructure.Data", "Raffle.Infrastructure.Data\Raffle.Infrastructure.Data.csproj", "{EF899995-9D1E-40F0-9ABA-D9086A88D285}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.Infrastructure.Data", "Raffle.Infrastructure.Data\Raffle.Infrastructure.Data.csproj", "{EF899995-9D1E-40F0-9ABA-D9086A88D285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.Infrastructure.IoC", "Raffle.Infrastructure.IoC\Raffle.Infrastructure.IoC.csproj", "{442C4490-BB7C-4A5E-A176-D8B246E7FB0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.Infrastructure.IoC", "Raffle.Infrastructure.IoC\Raffle.Infrastructure.IoC.csproj", "{442C4490-BB7C-4A5E-A176-D8B246E7FB0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.Tests", "Raffle.Tests\Raffle.Tests.csproj", "{F7D2233B-B285-458F-83B3-94CB5A6FBD08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.Tests", "Raffle.Tests\Raffle.Tests.csproj", "{F7D2233B-B285-458F-83B3-94CB5A6FBD08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle.WebApi", "Raffle.WebApi\Raffle.WebApi.csproj", "{6E77C4B8-018F-4D34-A25C-AA1A1B4F6D2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raffle.WebApi", "Raffle.WebApi\Raffle.WebApi.csproj", "{6E77C4B8-018F-4D34-A25C-AA1A1B4F6D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

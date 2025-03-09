@@ -8,12 +8,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Raffle.Domain\Raffle.Domain.csproj" />
+    <ProjectReference Include="..\Raffle.Infrastructure.Data\Raffle.Infrastructure.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
   </ItemGroup>
 
 </Project>

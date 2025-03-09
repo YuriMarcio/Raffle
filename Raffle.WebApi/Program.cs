@@ -1,6 +1,5 @@
 using Raffle.Infrastructure.IoC;
-
-
+using Raffle.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Adicione os serviços
 builder.Services.AddControllers();
-builder.Services.AddApplicationServices(); // IoC
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddScoped<IRaffleService, RaffleService>();
 
 var app = builder.Build();
 
