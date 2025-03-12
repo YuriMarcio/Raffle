@@ -9,11 +9,11 @@ namespace Raffle.Infrastructure.Repositories
     public class PrizeRepository : IPrizeRepository
     {
         private readonly RaffleDbContext _context;
-        private readonly IPrizeRepository _prizeRepository;
 
+        // Construtor para injeção de dependência
         public PrizeRepository(RaffleDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<Prize?> GetByIdAsync(string prizeId)
@@ -23,12 +23,18 @@ namespace Raffle.Infrastructure.Repositories
 
         public async Task AddAsync(Prize prize)
         {
+            if (prize == null)
+                throw new ArgumentNullException(nameof(prize));
+
             await _context.Prizes.AddAsync(prize);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Prize prize)
         {
+            if (prize == null)
+                throw new ArgumentNullException(nameof(prize));
+
             _context.Prizes.Update(prize);
             await _context.SaveChangesAsync();
         }
@@ -36,11 +42,13 @@ namespace Raffle.Infrastructure.Repositories
         public async Task DeleteAsync(string prizeId)
         {
             var prize = await GetByIdAsync(prizeId);
-            if (prize != null)
+            if (prize == null)
             {
-                _context.Prizes.Remove(prize);
-                await _context.SaveChangesAsync();
+                throw new InvalidOperationException("Prize not found");
             }
+
+            _context.Prizes.Remove(prize);
+            await _context.SaveChangesAsync();
         }
     }
 }

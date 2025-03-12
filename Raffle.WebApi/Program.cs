@@ -1,8 +1,9 @@
 using Raffle.Infrastructure.IoC;
+using Raffle.Infrastructure.Repositories;
 using Raffle.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddApplicationServices(builder.Configuration);
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -12,7 +13,11 @@ builder.Services.AddSwaggerGen();
 // Adicione os serviços
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddScoped<IRaffleService, RaffleService>();
+builder.Services.AddScoped<IPrizeRepository, PrizeRepository>();
+builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
+builder.Services.AddScoped<IRaffleService, RaffleService>(); 
+builder.Services.AddScoped<IPrizeService, PrizeService>();
+
 
 var app = builder.Build();
 

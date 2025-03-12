@@ -35,6 +35,6 @@ namespace Raffle.Infrastructure.Services
         Task<Prize> GetPrizeByIdAsync(string prizeId);
         Task<IEnumerable<Prize>> GetPrizesByRaffleIdAsync(string raffleId);
         Task<Prize> UpdatePrizeAsync(string prizeId, UpdatePrizeDtoRequest dtoRequest);
-        Task DeletePrizeAsync(string aId);
+        Task <bool> DeletePrizeAsync(string aId);
     }
 }

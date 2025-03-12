@@ -1,4 +1,5 @@
-﻿using Raffle.Aplication.DTOs.Prize;
+﻿using Microsoft.EntityFrameworkCore;
+using Raffle.Aplication.DTOs.Prize;
 using Raffle.Domain.Entities;
 using Raffle.Domain.Enums;
 using Raffle.Infrastructure.Data;
@@ -15,14 +16,14 @@ namespace Raffle.Infrastructure.Services
     {
         private readonly RaffleDbContext _context;
         private readonly IPrizeRepository _prizeRepository;
-        private readonly IRaffleRepository _RaffleRepository;
+        private readonly IRaffleRepository _raffleRepository;
 
         private readonly List<Prize> _prizes = new(); // Banco de dados simulado, substitua por um contexto de banco real.
         public PrizeService(RaffleDbContext context, IPrizeRepository prizeRepository, IRaffleRepository raffleRepository)
         {
             _context = context;
-            _prizeRepository = prizeRepository;
-            _RaffleRepository = raffleRepository;
+            _prizeRepository = prizeRepository ?? throw new ArgumentNullException(nameof(prizeRepository));
+            _raffleRepository = raffleRepository ?? throw new ArgumentNullException(nameof(raffleRepository));
         }
 
         public async Task<Prize> CreatePrizeAsync(CreatePrizeDtoRequest dtoRequest)
@@ -55,12 +56,23 @@ namespace Raffle.Infrastructure.Services
 
             return await Task.FromResult(prize); // Simula operação assíncrona
         }
-
         public async Task<IEnumerable<Prize>> GetPrizesByRaffleIdAsync(string raffleId)
         {
-            var prizes = _prizes.Where(p => p.RaffleId == raffleId).ToList();
+            try
+            {
+                // Filtra os prêmios com o RaffleId fornecido de forma assíncrona
+                var prizes = await _context.Prizes
+                    .Where(p => p.RaffleId == raffleId)
+                    .ToListAsync();
 
-            return await Task.FromResult(prizes); // Simula operação assíncrona
+                return prizes;
+            }
+            catch (Exception ex)
+            {
+                // Log da exceção (dependendo de como você gerencia logs na aplicação)
+                // Log.Error("Erro ao buscar prêmios: ", ex);
+                throw new Exception("Erro ao buscar prêmios para a rifa.", ex);
+            }
         }
 
         public async Task<Prize> UpdatePrizeAsync(string prizeId, UpdatePrizeDtoRequest dtoRequest)
@@ -91,11 +103,13 @@ namespace Raffle.Infrastructure.Services
 
         public async Task<PrizeDtoResponse> AddPrizeToRaffleAsync(string raffleId, CreatePrizeDtoRequest dtoRequest)
         {
-            var raffle = await _RaffleRepository.GetByIdAsync(raffleId);
+            // Buscar a rifa
+            var raffle = await _raffleRepository.GetByIdAsync(raffleId);
 
             if (raffle == null)
                 throw new KeyNotFoundException("Rifa não encontrada.");
 
+            // Criar o prêmio a partir do DTO
             var prize = new Prize
             {
                 Id = Guid.NewGuid().ToString(),
@@ -110,8 +124,10 @@ namespace Raffle.Infrastructure.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _context.AddAsync(prize);
+            // Salvar o prêmio usando o repositório
+            await _prizeRepository.AddAsync(prize);
 
+            // Retornar os dados do prêmio após ser salvo
             return new PrizeDtoResponse(prize);
         }
 
