@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Raffle.Infrastructure.IoC\Raffle.Infrastructure.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\User\" />
-    <Folder Include="Controllers\Ticket\" />
-  </ItemGroup>
-
 </Project>

@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Raffle.Domain.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Data.Repositories
+namespace Raffle.Infrastructure.Repositories
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
+        Task<User> GetByIdAsync(string userId);
+        Task<IEnumerable<User>> GetAllAsync();
+        Task AddAsync(User user);
+        Task UpdateAsync(User user);
+        Task DeleteAsync(string userId);
     }
 }
