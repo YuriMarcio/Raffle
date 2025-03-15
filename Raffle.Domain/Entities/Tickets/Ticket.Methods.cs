@@ -77,7 +77,7 @@ namespace Raffle.Domain.Entities.Tickets
                 {
                     Id = Guid.NewGuid().ToString(), // Gera um Id único para cada ticket
                     RaffleId = raffleId,
-                    ClientId = null, // Inicialmente sem cliente
+                    UserId = null, // Inicialmente sem cliente
                     Value = number,  // Utiliza o número gerado como valor do ticket
                     IsWinner = false, // Inicialmente, nenhum ticket é vencedor
                 });

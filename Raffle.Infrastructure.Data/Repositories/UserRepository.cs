@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Raffle.Domain.Entities;
-using Raffle.Infrastructure.Data.Repositories;
 using Raffle.Infrastructure.Data;
 using System;
 using System.Collections.Generic;

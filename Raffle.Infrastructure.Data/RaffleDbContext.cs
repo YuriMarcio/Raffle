@@ -12,7 +12,7 @@ namespace Raffle.Infrastructure.Data
         }
 
         // Definição de DbSet para a tabela "Clients"
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<User> Clients { get; set; }
 
         // Definição de DbSet para a tabela "Tickets"
         public DbSet<Ticket> Tickets { get; set; }
@@ -31,7 +31,7 @@ namespace Raffle.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             // Relacionamento de Client com Name (obrigatório e com limite de 100 caracteres)
-            modelBuilder.Entity<Client>()
+            modelBuilder.Entity<User>()
                 .Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -50,19 +50,19 @@ namespace Raffle.Infrastructure.Data
 
             // Relacionamento entre Ticket e Client
             modelBuilder.Entity<Ticket>()
-               .HasOne(t => t.Client) // Um Ticket pertence a um Client
+               .HasOne(t => t.User) // Um Ticket pertence a um Client
                .WithMany(c => c.Tickets) // Um Client pode ter muitos Tickets
-               .HasForeignKey(t => t.ClientId) // A chave estrangeira é ClientId em Ticket
+               .HasForeignKey(t => t.UserId) // A chave estrangeira é ClientId em Ticket
                .OnDelete(DeleteBehavior.Cascade); // Se um Client for excluído, todos os seus Tickets serão excluídos
 
             // Relacionamento entre RaffleClient, Client e Raffle (Tabela de relacionamento muitos-para-muitos)
             modelBuilder.Entity<RaffleClient>()
-                .HasKey(rc => new { rc.ClientId, rc.RaffleId }); // Definindo a chave composta (ClientId, RaffleId)
+                .HasKey(rc => new { rc.UserId, rc.RaffleId }); // Definindo a chave composta (ClientId, RaffleId)
 
             modelBuilder.Entity<RaffleClient>()
-                .HasOne(rc => rc.Client) // Um RaffleClient pertence a um Client
+                .HasOne(rc => rc.User) // Um RaffleClient pertence a um Client
                 .WithMany(c => c.RaffleClients) // Um Client pode ter muitos RaffleClients
-                .HasForeignKey(rc => rc.ClientId); // A chave estrangeira é ClientId em RaffleClient
+                .HasForeignKey(rc => rc.User); // A chave estrangeira é ClientId em RaffleClient
 
             modelBuilder.Entity<RaffleClient>()
                 .HasOne(rc => rc.Raffle) // Um RaffleClient pertence a um Raffle

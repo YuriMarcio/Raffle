@@ -9,8 +9,8 @@ namespace Raffle.Domain.Entities
 {
     public class RaffleClient
     {
-        public string ClientId { get; set; }  // Chave estrangeira para Client
-        public Client Client { get; set; }  // Propriedade de navegação para Client
+        public string UserId { get; set; }  // Chave estrangeira para Client
+        public User User { get; set; }  // Propriedade de navegação para Client
 
         public string RaffleId { get; set; }  // Chave estrangeira para Raffle
         public RaffleEntity Raffle { get; set; }  // Propriedade de navegação para Raffle
