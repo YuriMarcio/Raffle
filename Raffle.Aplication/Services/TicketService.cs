@@ -1,7 +1,7 @@
-﻿using Raffle.Application.DTOs.Requests;
+﻿using Raffle.Aplication.Interfaces;
+using Raffle.Application.DTOs.Requests;
 using Raffle.Application.DTOs.Responses;
 using Raffle.Application.Repositories;
-using Raffle.Application.Services.Interfaces;
 using Raffle.Domain.Entities.Tickets;
 using System.Collections.Generic;
 using System.Linq;

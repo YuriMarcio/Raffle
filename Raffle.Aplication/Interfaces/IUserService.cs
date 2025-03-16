@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Services
+namespace Raffle.Application.Interfaces
 {
     public interface IUserService
     {

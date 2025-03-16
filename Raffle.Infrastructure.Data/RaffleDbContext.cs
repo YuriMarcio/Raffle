@@ -11,9 +11,6 @@ namespace Raffle.Infrastructure.Data
         {
         }
 
-        // Definição de DbSet para a tabela "Clients"
-        public DbSet<User> Clients { get; set; }
-
         // Definição de DbSet para a tabela "Tickets"
         public DbSet<Ticket> Tickets { get; set; }
 
@@ -57,17 +54,12 @@ namespace Raffle.Infrastructure.Data
 
             // Relacionamento entre RaffleClient, Client e Raffle (Tabela de relacionamento muitos-para-muitos)
             modelBuilder.Entity<RaffleClient>()
-                .HasKey(rc => new { rc.UserId, rc.RaffleId }); // Definindo a chave composta (ClientId, RaffleId)
+                .HasKey(rc => new { rc.UserId, rc.RaffleId }); // Definindo chave composta
 
             modelBuilder.Entity<RaffleClient>()
-                .HasOne(rc => rc.User) // Um RaffleClient pertence a um Client
-                .WithMany(c => c.RaffleClients) // Um Client pode ter muitos RaffleClients
-                .HasForeignKey(rc => rc.User); // A chave estrangeira é ClientId em RaffleClient
-
-            modelBuilder.Entity<RaffleClient>()
-                .HasOne(rc => rc.Raffle) // Um RaffleClient pertence a um Raffle
-                .WithMany(r => r.RaffleClients) // Um Raffle pode ter muitos RaffleClients
-                .HasForeignKey(rc => rc.RaffleId); // A chave estrangeira é RaffleId em RaffleClient
+                .HasOne(rc => rc.User)
+                .WithMany(c => c.RaffleClients)
+                .HasForeignKey(rc => rc.UserId);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Raffle.Aplication.DTOs.AutenticationDto;
+using Raffle.Application.Interfaces;
 using Raffle.Infrastructure.Services;
 
 namespace Raffle.WebApi.Controllers

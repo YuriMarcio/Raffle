@@ -1,9 +1,7 @@
 ﻿using Raffle.Application.DTOs.Requests;
 using Raffle.Application.DTOs.Responses;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Raffle.Application.Services.Interfaces
+namespace Raffle.Aplication.Interfaces
 {
     public interface ITicketService
     {

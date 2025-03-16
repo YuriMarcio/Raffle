@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Raffle.Aplication.DTOs.AutenticationDto;
+using Raffle.Application.Interfaces;
 using Raffle.Domain.Entities;
 using Raffle.Infrastructure.Data;
 using System;
@@ -12,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Services
+namespace Raffle.Application.Services
 {
     public class AuthService : IAuthService
     {

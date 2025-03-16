@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Generators;
 using Raffle.Domain.Entities;
 using Raffle.Infrastructure.Data;
 using System;
@@ -31,8 +32,26 @@ namespace Raffle.Infrastructure.Repositories
         }
 
         // Adicionar um novo usuário
-        public async Task AddAsync(User user)
+        public async Task AddAsync(User aUser)
         {
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == aDtoRequest.Email);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("Usuário já existe.");
+            }
+
+            var user = new User
+            {
+                Name = aUser.Name,
+                Email = aUser.Email,
+                IsAdmin = aUser.IsAdmin,
+                Password = BCrypt.Net.BCrypt.HashPassword(aUser.Password)
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return "Usuário registrado com sucesso.";
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }

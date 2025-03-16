@@ -19,9 +19,9 @@ namespace Raffle.Domain.Entities.Tickets
         /// <summary>
         /// Constructor based on Raffle and Client
         /// </summary>
-        public Ticket(string raffleId, Guid? clientId)
+        public Ticket(string aRaffleId, Guid? UserId)
         {
-            RaffleId = raffleId;
+            RaffleId = aRaffleId;
         }
 
         /// <summary>
