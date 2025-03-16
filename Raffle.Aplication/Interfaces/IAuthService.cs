@@ -9,7 +9,6 @@ namespace Raffle.Application.Interfaces
 {
     public interface IAuthService
     {
-        Task<string> RegisterAsync(ResgisterDtoRequest aDtoRequest);
         Task<string> LoginAsync(string email, string password);
     }
 }

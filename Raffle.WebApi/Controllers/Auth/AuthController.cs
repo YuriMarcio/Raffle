@@ -16,21 +16,6 @@ namespace Raffle.WebApi.Controllers
             _authService = authService;
         }
 
-        // Registro de usuário
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] ResgisterDtoRequest aDtoRequest)
-        {
-            try
-            {
-                var result = await _authService.RegisterAsync(aDtoRequest);
-                return Ok(result);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         // Login de usuário
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDtoRequest aDtoRequest)
