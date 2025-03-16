@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Raffle.Aplication.DTOs.AutenticationDto;
+using Raffle.Application.Interfaces;
 using Raffle.Domain.Entities;
 using Raffle.Infrastructure.Data;
 using System;
@@ -12,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Services
+namespace Raffle.Application.Services
 {
     public class AuthService : IAuthService
     {
@@ -23,28 +24,6 @@ namespace Raffle.Infrastructure.Services
         {
             _context = context;
             _configuration = configuration;
-        }
-
-        public async Task<string> RegisterAsync(ResgisterDtoRequest aDtoRequest)
-        {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == aDtoRequest.Email);
-            if (existingUser != null)
-            {
-                throw new InvalidOperationException("Usuário já existe.");
-            }
-
-            var user = new User
-            {
-                Name = aDtoRequest.Name,
-                Email = aDtoRequest.Email,
-                IsAdmin = aDtoRequest.IsAdmin,
-                Password = BCrypt.Net.BCrypt.HashPassword(aDtoRequest.Password)
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return "Usuário registrado com sucesso.";
         }
 
         public async Task<string> LoginAsync(string email, string password)

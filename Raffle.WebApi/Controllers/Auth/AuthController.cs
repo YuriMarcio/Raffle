@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Raffle.Aplication.DTOs.AutenticationDto;
+using Raffle.Application.Interfaces;
 using Raffle.Infrastructure.Services;
 
 namespace Raffle.WebApi.Controllers
@@ -13,21 +14,6 @@ namespace Raffle.WebApi.Controllers
         public AuthController(IAuthService authService)
         {
             _authService = authService;
-        }
-
-        // Registro de usuário
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] ResgisterDtoRequest aDtoRequest)
-        {
-            try
-            {
-                var result = await _authService.RegisterAsync(aDtoRequest);
-                return Ok(result);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         // Login de usuário

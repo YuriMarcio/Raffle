@@ -1,6 +1,7 @@
 ﻿using LeadSoft.Common.Library.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Raffle.Aplication.DTOs.Prize;
+using Raffle.Aplication.Interfaces;
 using Raffle.Infrastructure.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;

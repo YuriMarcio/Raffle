@@ -63,7 +63,7 @@ namespace Raffle.Domain.Entities
         /// </summary>
         [Phone(ErrorMessage = "O número de telefone informado não é válido.")]
         [MaxLength(15, ErrorMessage = "O número de telefone não pode exceder 15 caracteres.")]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// Indica se o número de telefone do cliente foi verificado.

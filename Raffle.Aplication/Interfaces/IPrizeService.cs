@@ -3,7 +3,7 @@ using Raffle.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Services
+namespace Raffle.Aplication.Interfaces
 {
     public interface IPrizeService
     {

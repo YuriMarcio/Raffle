@@ -4,6 +4,8 @@ using Raffle.Infrastructure.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Raffle.Aplication.DTOs.Prize;
+using Raffle.Aplication.Interfaces;
+using Raffle.Application.Interfaces;
 
 namespace Raffle.WebApi.Controllers
 {

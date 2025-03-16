@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Raffle.Aplication.DTOs.Prize;
+using Raffle.Aplication.Interfaces;
 using Raffle.Domain.Entities;
 using Raffle.Domain.Enums;
 using Raffle.Infrastructure.Data;

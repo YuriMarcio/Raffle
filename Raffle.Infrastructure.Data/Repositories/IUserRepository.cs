@@ -9,7 +9,7 @@ namespace Raffle.Infrastructure.Repositories
     {
         Task<User> GetByIdAsync(string userId);
         Task<IEnumerable<User>> GetAllAsync();
-        Task AddAsync(User user);
+        Task<string> AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(string userId);
     }

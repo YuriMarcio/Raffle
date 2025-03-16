@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Raffle.Aplication.Interfaces;
 using Raffle.Application.DTOs.Requests;
 using Raffle.Application.DTOs.Responses;
-using Raffle.Application.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

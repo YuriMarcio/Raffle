@@ -1,4 +1,5 @@
 ﻿using Raffle.Application.DTOs.User;
+using Raffle.Application;
 using Raffle.Application.Interfaces;
 using Raffle.Domain.Entities;
 using Raffle.Infrastructure.Repositories;
@@ -27,6 +28,7 @@ namespace Raffle.Application.Services
                 Id = u.Id,
                 Name = u.Name,
                 Email = u.Email,
+                Phone = u.Phone,
                 IsEnabled = u.IsEnabled,
                 IsAdmin = u.IsAdmin
             });
@@ -55,9 +57,28 @@ namespace Raffle.Application.Services
         /// </summary>
         public async Task<UserResponseDto> CreateUserAsync(CreateUserRequestDto userDto)
         {
-            var newUser = new User
+            //var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == aDtoRequest.Email);
+            //if (existingUser != null)
+            //{
+            //    throw new InvalidOperationException("Usuário já existe.");
+            //}
+
+            //var user = new User
+            //{
+            //    Name = aDtoRequest.Name,
+            //    Email = aDtoRequest.Email,
+            //    IsAdmin = aDtoRequest.IsAdmin,
+            //    Password = BCrypt.Net.BCrypt.HashPassword(aDtoRequest.Password)
+            //};
+
+            //_context.Users.Add(user);
+            //await _context.SaveChangesAsync();
+
+            //return "Usuário registrado com sucesso.";
+            User newUser = new User
             {
                 Id = Guid.NewGuid().ToString(),
+                Phone = userDto.Phone,
                 Name = userDto.Name,
                 Email = userDto.Email,
                 Password = userDto.Password, // Hash de senha deve ser aplicado aqui!

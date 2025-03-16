@@ -12,8 +12,8 @@ using Raffle.Infrastructure.Data;
 namespace Raffle.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(RaffleDbContext))]
-    [Migration("20250309173544_addcreateAt")]
-    partial class addcreateAt
+    [Migration("20250315173121_changeClienttoUser")]
+    partial class changeClienttoUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,50 +24,6 @@ namespace Raffle.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("Raffle.Domain.Entities.Client", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsEmailVerified")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsPhoneVerified")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clients");
-                });
 
             modelBuilder.Entity("Raffle.Domain.Entities.Prize", b =>
                 {
@@ -97,8 +53,8 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<string>("RaffleEntityId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int?>("RaffleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RaffleId")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -199,7 +155,7 @@ namespace Raffle.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Raffle.Domain.Entities.RaffleClient", b =>
                 {
-                    b.Property<string>("ClientId")
+                    b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("RaffleId")
@@ -208,7 +164,7 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("ClientId", "RaffleId");
+                    b.HasKey("UserId", "RaffleId");
 
                     b.HasIndex("RaffleId");
 
@@ -220,9 +176,6 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ClientId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -232,7 +185,7 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<bool>("IsWinner")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("PurchaseDate")
+                    b.Property<DateTime?>("PurchaseDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("RaffleId")
@@ -242,14 +195,17 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("RaffleId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
                 });
@@ -264,16 +220,19 @@ namespace Raffle.Infrastructure.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<Guid?>("Guid")
-                        .HasColumnType("char(36)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("IsEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsPhoneVerified")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
@@ -284,6 +243,11 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -302,52 +266,52 @@ namespace Raffle.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Raffle.Domain.Entities.RaffleClient", b =>
                 {
-                    b.HasOne("Raffle.Domain.Entities.Client", "Client")
-                        .WithMany("RaffleClients")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Raffle.Domain.Entities.Raffle.RaffleEntity", "Raffle")
                         .WithMany("RaffleClients")
                         .HasForeignKey("RaffleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.HasOne("Raffle.Domain.Entities.User", "User")
+                        .WithMany("RaffleClients")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Raffle");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Raffle.Domain.Entities.Tickets.Ticket", b =>
                 {
-                    b.HasOne("Raffle.Domain.Entities.Client", "Client")
-                        .WithMany("Tickets")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Raffle.Domain.Entities.Raffle.RaffleEntity", "Raffle")
                         .WithMany("Tickets")
                         .HasForeignKey("RaffleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.HasOne("Raffle.Domain.Entities.User", "User")
+                        .WithMany("Tickets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Raffle");
-                });
 
-            modelBuilder.Entity("Raffle.Domain.Entities.Client", b =>
-                {
-                    b.Navigation("RaffleClients");
-
-                    b.Navigation("Tickets");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Raffle.Domain.Entities.Raffle.RaffleEntity", b =>
                 {
                     b.Navigation("Prizes");
 
+                    b.Navigation("RaffleClients");
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Raffle.Domain.Entities.User", b =>
+                {
                     b.Navigation("RaffleClients");
 
                     b.Navigation("Tickets");

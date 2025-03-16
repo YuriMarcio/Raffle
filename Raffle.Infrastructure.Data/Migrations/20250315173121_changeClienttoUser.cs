@@ -6,38 +6,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Raffle.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class addcreateAt : Migration
+    public partial class changeClienttoUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsEmailVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Password = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Phone = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsPhoneVerified = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -90,12 +64,15 @@ namespace Raffle.Infrastructure.Data.Migrations
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsEmailVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Guid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    Phone = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsPhoneVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,7 +98,8 @@ namespace Raffle.Infrastructure.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    RaffleId = table.Column<int>(type: "int", nullable: true),
+                    RaffleId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     RaffleEntityId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Guid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
@@ -141,7 +119,7 @@ namespace Raffle.Infrastructure.Data.Migrations
                 name: "RaffleClient",
                 columns: table => new
                 {
-                    ClientId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RaffleId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -149,17 +127,17 @@ namespace Raffle.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RaffleClient", x => new { x.ClientId, x.RaffleId });
-                    table.ForeignKey(
-                        name: "FK_RaffleClient_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_RaffleClient", x => new { x.UserId, x.RaffleId });
                     table.ForeignKey(
                         name: "FK_RaffleClient_Raffles_RaffleId",
                         column: x => x.RaffleId,
                         principalTable: "Raffles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RaffleClient_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -175,26 +153,26 @@ namespace Raffle.Infrastructure.Data.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Value = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RaffleId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsWinner = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PurchaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    PurchaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Tickets_Raffles_RaffleId",
                         column: x => x.RaffleId,
                         principalTable: "Raffles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -211,14 +189,14 @@ namespace Raffle.Infrastructure.Data.Migrations
                 column: "RaffleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ClientId",
-                table: "Tickets",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_RaffleId",
                 table: "Tickets",
                 column: "RaffleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_UserId",
+                table: "Tickets",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -234,13 +212,10 @@ namespace Raffle.Infrastructure.Data.Migrations
                 name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
-
-            migrationBuilder.DropTable(
                 name: "Raffles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

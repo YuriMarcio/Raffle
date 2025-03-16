@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raffle.Infrastructure.Services
+namespace Raffle.Application.Interfaces
 {
     public interface IAuthService
     {
-        Task<string> RegisterAsync(ResgisterDtoRequest aDtoRequest);
         Task<string> LoginAsync(string email, string password);
     }
 }
