@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Raffle.Domain.Entities.Raffle
+namespace Raffle.Domain.Entities.Raffles
 {
     public class RaffleEntity : CollectionsBase
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
 
 namespace Raffle.Aplication.DTOs.RaffleDto
 {

@@ -1,4 +1,4 @@
-﻿using Raffle.Domain.Entities.Raffle;
+﻿using Raffle.Domain.Entities.Raffles;
 using System;
 using System.Collections.Generic;
 using System.Linq;

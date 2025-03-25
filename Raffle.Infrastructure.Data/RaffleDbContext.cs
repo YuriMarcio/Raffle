@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
 using Raffle.Domain.Entities.Tickets;
+using Raffle.Domain.Entities.Payments;
 using Raffle.Domain.Entities;
 
 namespace Raffle.Infrastructure.Data
@@ -23,11 +24,14 @@ namespace Raffle.Infrastructure.Data
         // Definição de DbSet para a tabela "Raffles"
         public DbSet<RaffleEntity> Raffles { get; set; } = null!;
 
+        // Definição de DbSet para a tabela "Payments"
+        public DbSet<Payment> Payments { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Relacionamento de Client com Name (obrigatório e com limite de 100 caracteres)
+            // Relacionamento de User com Name (obrigatório e com limite de 100 caracteres)
             modelBuilder.Entity<User>()
                 .Property(c => c.Name)
                 .IsRequired()
@@ -45,14 +49,14 @@ namespace Raffle.Infrastructure.Data
                 .IsRequired()
                 .HasMaxLength(200);
 
-            // Relacionamento entre Ticket e Client
+            // Relacionamento entre Ticket e User
             modelBuilder.Entity<Ticket>()
-               .HasOne(t => t.User) // Um Ticket pertence a um Client
-               .WithMany(c => c.Tickets) // Um Client pode ter muitos Tickets
-               .HasForeignKey(t => t.UserId) // A chave estrangeira é ClientId em Ticket
-               .OnDelete(DeleteBehavior.Cascade); // Se um Client for excluído, todos os seus Tickets serão excluídos
+               .HasOne(t => t.User) // Um Ticket pertence a um User
+               .WithMany(c => c.Tickets) // Um User pode ter muitos Tickets
+               .HasForeignKey(t => t.UserId) // A chave estrangeira é UserId em Ticket
+               .OnDelete(DeleteBehavior.Cascade); // Se um User for excluído, todos os seus Tickets serão excluídos
 
-            // Relacionamento entre RaffleClient, Client e Raffle (Tabela de relacionamento muitos-para-muitos)
+            // Relacionamento entre RaffleClient, User e Raffle (Tabela de relacionamento muitos-para-muitos)
             modelBuilder.Entity<RaffleClient>()
                 .HasKey(rc => new { rc.UserId, rc.RaffleId }); // Definindo chave composta
 
@@ -60,6 +64,20 @@ namespace Raffle.Infrastructure.Data
                 .HasOne(rc => rc.User)
                 .WithMany(c => c.RaffleClients)
                 .HasForeignKey(rc => rc.UserId);
+
+            // Relacionamento entre Payment e Ticket (1 pagamento pode pagar vários tickets)
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Payment) // Um Ticket pertence a um Payment
+                .WithMany(p => p.Tickets) // Um Payment pode pagar vários Tickets
+                .HasForeignKey(t => t.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrição para evitar exclusão acidental
+
+            // Relacionamento entre Payment e User (quem realiza o pagamento)
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Payments)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

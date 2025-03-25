@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Raffle.Domain.Entities;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
 
 namespace Raffle.Infrastructure.Repositories
 {

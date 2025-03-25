@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raffle.Domain.Entities.Raffle
+namespace Raffle.Aplication.DTOs.Payment
 {
-    public partial class RaffleMethods
+    internal class PaymentResponse
     {
     }
 }

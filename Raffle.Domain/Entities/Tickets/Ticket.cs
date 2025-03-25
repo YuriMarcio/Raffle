@@ -1,5 +1,6 @@
 ﻿using LeadSoft.Common.GlobalDomain.Entities;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
+using Raffle.Domain.Entities.Payments;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,12 +17,21 @@ namespace Raffle.Domain.Entities.Tickets
         public DateTime? UpdatedAt { get; set; } // Data de última atualização (opcional)
 
         public int Value { get; set; } // Valor do ticket
+
         public string? UserId { get; set; } // ID do cliente associado
+
         public string RaffleId { get; set; } // ID da rifa associada
+
         public bool IsWinner { get; set; } // Se o ticket é vencedor
+
         public DateTime? PurchaseDate { get; set; } // Data da compra
 
+        public string? PaymentId { get; set; } // ID do pagamento associado (opcional)
+
         public User User { get; set; } // Cliente associado
+
         public RaffleEntity Raffle { get; set; } // Rifa associada
+
+        public Payment? Payment { get; set; } // Pagamento associado (opcional)
     }
 }

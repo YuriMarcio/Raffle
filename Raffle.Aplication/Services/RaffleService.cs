@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Raffle.Domain.Entities.Tickets;
 using LeadSoft.Common.Library.Extensions;
 using Raffle.Application.Interfaces;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
 
 
 

@@ -1,4 +1,5 @@
 ﻿using LeadSoft.Common.GlobalDomain.Entities;
+using Raffle.Domain.Entities.Payments;
 using Raffle.Domain.Entities.Tickets;
 using System;
 using System.Collections.Generic;
@@ -85,5 +86,7 @@ namespace Raffle.Domain.Entities
         /// Indica se o usuário tem permissões de administrador.
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>(); // Relacionamento com pagamentos
     }
 }

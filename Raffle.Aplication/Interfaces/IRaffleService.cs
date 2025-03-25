@@ -1,6 +1,6 @@
 ﻿using Raffle.Aplication.DTOs.AutenticationDto;
 using Raffle.Aplication.DTOs.RaffleDto;
-using Raffle.Domain.Entities.Raffle;
+using Raffle.Domain.Entities.Raffles;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
