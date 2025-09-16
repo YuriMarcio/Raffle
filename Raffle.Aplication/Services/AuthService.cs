@@ -37,13 +37,49 @@ namespace Raffle.Application.Services
             return GenerateJwtToken(user);
         }
 
+        public async Task<string> RegisterAsync(string name, string email, string password, string phone)
+        {
+            // Verificar se o email já existe
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("Email já cadastrado.");
+            }
+
+            // Criar novo usuário
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                Email = email,
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
+                Phone = phone,
+                IsEmailVerified = false,
+                IsPhoneVerified = false,
+                IsAdmin = false,
+                IsEnabled = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return GenerateJwtToken(user);
+        }
+
         private string GenerateJwtToken(User user)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email)
             };
+            
+            // Adicionar claim de role se for admin
+            if (user.IsAdmin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

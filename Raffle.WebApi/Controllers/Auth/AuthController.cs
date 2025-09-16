@@ -30,5 +30,20 @@ namespace Raffle.WebApi.Controllers
                 return Unauthorized("Credenciais inválidas.");
             }
         }
+
+        // Registro de usuário
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDtoRequest dtoRequest)
+        {
+            try
+            {
+                var token = await _authService.RegisterAsync(dtoRequest.Name, dtoRequest.Email, dtoRequest.Password, dtoRequest.Phone);
+                return Ok(new { Token = token });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

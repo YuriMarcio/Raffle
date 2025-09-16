@@ -23,6 +23,9 @@ namespace Raffle.Aplication.DTOs.RaffleDto
         public bool IsEnable { get; set; }
         public int Status { get; set; }
         public string CoverImageUrl { get; set; } = string.Empty;
+        public int NumberOfTickets { get; set; } = 100;
+        public string ThemeId { get; set; } = string.Empty;
+        public string UniqueLink { get; set; } = string.Empty;
         public List<UpdatePrizeDtoRequest> Prizes { get; set; } = new();
     }
 }

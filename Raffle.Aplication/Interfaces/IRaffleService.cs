@@ -14,5 +14,9 @@ namespace Raffle.Application.Interfaces
         Task<IEnumerable<RaffleEntity>> GetAllRafflesAsync();
         Task<RaffleDto> GetRaffleByIdAsync(string aID);
         Task<RaffleDto> UpdateRaffleAsync(string aID, UpdateRaffleDtoRequest dtoRequest);
+        Task<RaffleEntity> GetByUniqueLinkAsync(string uniqueLink);
+        Task<List<int>> GetAvailableTicketsByUniqueLinkAsync(string uniqueLink);
+        Task<object> PurchaseTicketsPublicAsync(string uniqueLink, List<int> ticketNumbers, object customerInfo);
+        Task<object> GetTicketByUniqueLinkAsync(string uniqueLink, int ticketNumber);
     }
 }

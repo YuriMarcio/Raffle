@@ -13,6 +13,7 @@ using Raffle.Domain.Entities.Tickets;
 using LeadSoft.Common.Library.Extensions;
 using Raffle.Application.Interfaces;
 using Raffle.Domain.Entities.Raffle;
+using Raffle.Aplication.DTOs.Prize;
 
 
 
@@ -24,10 +25,10 @@ namespace Raffle.Infrastructure.Services
         private readonly IConfiguration _configuration;
 
         private readonly IMapper _mapper;
-        public RaffleService(RaffleDbContext context)
+        public RaffleService(RaffleDbContext context, IMapper mapper)
         {
             _context = context;
-
+            _mapper = mapper;
         }
 
         public async Task<CreateRaffleDtoResponse> CreateRaffleAsync(CreateRaffleDtoRequest dtoRequest)
@@ -51,6 +52,7 @@ namespace Raffle.Infrastructure.Services
                 IsEnable = dtoRequest.IsEnable,
                 Status = dtoRequest.Status,
                 CoverImageUrl = dtoRequest.CoverImageUrl,
+                UniqueLink = GenerateUniqueLink()
             };
 
             // Adiciona a rifa ao contexto
@@ -98,24 +100,59 @@ namespace Raffle.Infrastructure.Services
 
         public async Task<RaffleDto> GetRaffleByIdAsync(string aID)
         {
-            var raffle = await _context.Raffles.FindAsync(aID);
+            var raffle = await _context.Raffles
+                .Include(r => r.Prizes)
+                .Include(r => r.Tickets)
+                .Include(r => r.RaffleClients)
+                .FirstOrDefaultAsync(r => r.Id == aID);
+                
             if (raffle == null)
                 return null;
 
-            return new RaffleDto { Title = raffle.Title, Description = raffle.Description };
+            // Usar AutoMapper para mapear todos os campos
+            return _mapper.Map<RaffleDto>(raffle);
         }
 
         public async Task<RaffleDto> UpdateRaffleAsync(string aID, UpdateRaffleDtoRequest dtoRequest)
         {
-            var raffle = await _context.Raffles.FindAsync(aID);
+            var raffle = await _context.Raffles
+                .Include(r => r.Prizes)
+                .Include(r => r.Tickets)
+                .Include(r => r.RaffleClients)
+                .FirstOrDefaultAsync(r => r.Id == aID);
+                
             if (raffle == null)
                 throw new KeyNotFoundException("Rifa não encontrada.");
 
-
+            // Use AutoMapper for the update
             _mapper.Map(dtoRequest, raffle);
-
+            
+            // Handle prizes update if provided
+            if (dtoRequest.Prizes != null && dtoRequest.Prizes.Any())
+            {
+                // Remove existing prizes
+                _context.Prizes.RemoveRange(raffle.Prizes);
+                
+                // Add new prizes
+                var newPrizes = dtoRequest.Prizes.Select(p => new Prize
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = p.Title,
+                    Description = p.Description,
+                    Value = p.Value,
+                    ImageUrl = p.ImageUrl,
+                    Quantity = p.Quantity,
+                    Type = (Domain.Enums.PrizeType)p.Type,
+                    RaffleId = raffle.Id
+                }).ToList();
+                
+                _context.Prizes.AddRange(newPrizes);
+            }
+            
+            // UpdatedAt will be updated automatically by Entity Framework if configured
             await _context.SaveChangesAsync();
 
+            // Map entity to DTO using AutoMapper
             return _mapper.Map<RaffleDto>(raffle);
         }
 
@@ -127,6 +164,87 @@ namespace Raffle.Infrastructure.Services
 
             _context.Raffles.Remove(raffle);
             await _context.SaveChangesAsync();
+        }
+
+        private string GenerateUniqueLink()
+        {
+            return Guid.NewGuid().ToString("N")[..8];
+        }
+
+        public async Task<RaffleEntity> GetByUniqueLinkAsync(string uniqueLink)
+        {
+            return await _context.Raffles
+                .Include(r => r.Tickets)
+                .FirstOrDefaultAsync(r => r.UniqueLink == uniqueLink);
+        }
+
+        public async Task<List<int>> GetAvailableTicketsByUniqueLinkAsync(string uniqueLink)
+        {
+            var raffle = await _context.Raffles
+                .Include(r => r.Tickets)
+                .FirstOrDefaultAsync(r => r.UniqueLink == uniqueLink);
+
+            if (raffle == null)
+                throw new KeyNotFoundException("Rifa não encontrada");
+
+            var soldTickets = raffle.Tickets.Where(t => t.UserId != null).Select(t => t.Value).ToList();
+            var availableTickets = new List<int>();
+
+            for (int i = 1; i <= 100; i++)
+            {
+                if (!soldTickets.Contains(i))
+                {
+                    availableTickets.Add(i);
+                }
+            }
+
+            return availableTickets;
+        }
+
+        public async Task<object> PurchaseTicketsPublicAsync(string uniqueLink, List<int> ticketNumbers, object customerInfo)
+        {
+            var raffle = await GetByUniqueLinkAsync(uniqueLink);
+            if (raffle == null)
+                throw new KeyNotFoundException("Rifa não encontrada");
+
+            var availableTickets = await GetAvailableTicketsByUniqueLinkAsync(uniqueLink);
+            var invalidNumbers = ticketNumbers.Where(n => !availableTickets.Contains(n)).ToList();
+
+            if (invalidNumbers.Any())
+                throw new ArgumentException($"Números não disponíveis: {string.Join(", ", invalidNumbers)}");
+
+            var newTickets = ticketNumbers.Select(number => new Ticket
+            {
+                Id = Guid.NewGuid().ToString(),
+                Value = number,
+                RaffleId = raffle.Id,
+                UserId = null,
+                PurchaseDate = DateTime.UtcNow,
+                IsWinner = false
+            }).ToList();
+
+            _context.Tickets.AddRange(newTickets);
+            await _context.SaveChangesAsync();
+
+            return new { Message = "Números reservados com sucesso", TicketNumbers = ticketNumbers };
+        }
+
+        public async Task<object> GetTicketByUniqueLinkAsync(string uniqueLink, int ticketNumber)
+        {
+            var raffle = await GetByUniqueLinkAsync(uniqueLink);
+            if (raffle == null)
+                throw new KeyNotFoundException("Rifa não encontrada");
+
+            var ticket = raffle.Tickets.FirstOrDefault(t => t.Value == ticketNumber);
+            if (ticket == null)
+                return null;
+
+            return new
+            {
+                Number = ticket.Value,
+                IsAvailable = ticket.UserId == null,
+                PurchaseDate = ticket.PurchaseDate
+            };
         }
     }
 }

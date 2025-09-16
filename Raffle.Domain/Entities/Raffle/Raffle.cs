@@ -98,6 +98,21 @@ namespace Raffle.Domain.Entities.Raffle
         public int TicketsSold { get; set; }
 
         /// <summary>
+        /// Link único para acesso público à rifa
+        /// </summary>
+        public string UniqueLink { get; set; }
+
+        /// <summary>
+        /// Número total de tickets/números da rifa
+        /// </summary>
+        public int NumberOfTickets { get; set; } = 100;
+
+        /// <summary>
+        /// ID do tema personalizado da rifa
+        /// </summary>
+        public string ThemeId { get; set; }
+
+        /// <summary>
         /// Indica se a entidade está ativa ou não
         /// </summary>
         public virtual bool IsEnabled { get; private set; }

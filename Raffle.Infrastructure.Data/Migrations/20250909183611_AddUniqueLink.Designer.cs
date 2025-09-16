@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Raffle.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Raffle.Infrastructure.Data;
 namespace Raffle.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(RaffleDbContext))]
-    partial class RaffleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250909183611_AddUniqueLink")]
+    partial class AddUniqueLink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,9 +119,6 @@ namespace Raffle.Infrastructure.Data.Migrations
                     b.Property<int>("MaxTicketPerUser")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberOfTickets")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
@@ -129,10 +129,6 @@ namespace Raffle.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Terms")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ThemeId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
