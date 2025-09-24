@@ -33,7 +33,7 @@ namespace Raffle.Domain.Entities
         
         public string PurchaseButtonText { get; set; } = "Comprar Números";
         
-        public string HeaderTitle { get; set; } = "Participe da Rifa";
+        public string HeaderTitle { get; set; } = "Participe do Sorteio Promocional";
         
         public string FooterText { get; set; } = "Boa sorte!";
         

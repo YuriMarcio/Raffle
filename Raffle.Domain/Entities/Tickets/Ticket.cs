@@ -17,11 +17,11 @@ namespace Raffle.Domain.Entities.Tickets
 
         public int Value { get; set; } // Valor do ticket
         public string? UserId { get; set; } // ID do cliente associado
-        public string RaffleId { get; set; } // ID da rifa associada
+        public string RaffleId { get; set; } // ID do sorteio promocional associado
         public bool IsWinner { get; set; } // Se o ticket é vencedor
         public DateTime? PurchaseDate { get; set; } // Data da compra
 
         public User User { get; set; } // Cliente associado
-        public RaffleEntity Raffle { get; set; } // Rifa associada
+        public RaffleEntity Raffle { get; set; } // Sorteio promocional associado
     }
 }

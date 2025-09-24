@@ -8,24 +8,24 @@ namespace Raffle.Aplication.Interfaces
     public interface IPrizeService
     {
           /// <summary>
-        /// Adiciona um prêmio a uma rifa específica.
+        /// Adiciona um prêmio a um sorteio promocional específico.
         /// </summary>
-        /// <param name="raffleId">ID da rifa.</param>
+        /// <param name="raffleId">ID do sorteio promocional.</param>
         /// <param name="dtoRequest">Dados do prêmio a ser adicionado.</param>
         /// <returns>Detalhes do prêmio criado.</returns>
         Task<PrizeDtoResponse> AddPrizeToRaffleAsync(string raffleId, CreatePrizeDtoRequest dtoRequest);
 
         /// <summary>
-        /// Remove um prêmio de uma rifa específica.
+        /// Remove um prêmio de um sorteio promocional específico.
         /// </summary>
-        /// <param name="raffleId">ID da rifa.</param>
+        /// <param name="raffleId">ID do sorteio promocional.</param>
         /// <param name="prizeId">ID do prêmio.</param>
         Task RemovePrizeFromRaffleAsync(string raffleId, string prizeId);
 
         /// <summary>
-        /// Atualiza os detalhes de um prêmio vinculado a uma rifa.
+        /// Atualiza os detalhes de um prêmio vinculado a um sorteio promocional.
         /// </summary>
-        /// <param name="raffleId">ID da rifa.</param>
+        /// <param name="raffleId">ID do sorteio promocional.</param>
         /// <param name="prizeId">ID do prêmio.</param>
         /// <param name="dtoRequest">Dados atualizados do prêmio.</param>
         /// <returns>Detalhes do prêmio atualizado.</returns>

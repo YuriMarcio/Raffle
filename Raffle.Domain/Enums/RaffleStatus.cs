@@ -8,9 +8,12 @@ namespace Raffle.Domain.Enums
 {
     public enum RaffleStatus
     {
-        Draft = 1,       
-        Active = 2,      
-        Finished = 3,    
-        Cancelled = 4    
+        Draft = 1,
+        PendingAuthorization = 2,
+        Authorized = 3,
+        Active = 4,
+        Closed = 5,
+        Drawn = 6,
+        Cancelled = 7
     }
 }

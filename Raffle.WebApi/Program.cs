@@ -5,6 +5,8 @@ using Raffle.Infrastructure.Services;
 using Raffle.Application.Interfaces;
 using Raffle.Application.Services;
 using Raffle.Application.Repositories;
+using Raffle.Infrastructure.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices(builder.Configuration);
@@ -13,16 +15,15 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Configure CORS
+// Configure CORS - Allow all origins for testing
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
+    options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3001", "http://localhost:3000", "http://localhost:5173")
+            policy.AllowAnyOrigin()
                   .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowAnyMethod();
         });
 });
 
@@ -45,15 +46,36 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
+// Seed the database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Enable Swagger in production for testing
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Enable CORS - MUST be before UseAuthorization
-app.UseCors("AllowReactApp");
+app.UseCors("AllowAll");
 
 // Configure static files serving
 app.UseStaticFiles();

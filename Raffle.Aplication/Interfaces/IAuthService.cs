@@ -11,5 +11,8 @@ namespace Raffle.Application.Interfaces
     {
         Task<string> LoginAsync(string email, string password);
         Task<string> RegisterAsync(string name, string email, string password, string phone);
+        // Task<string> RegisterCPFAsync(RegisterCPFRequest request); // REMOVIDO - Lei 5.768/71 proíbe CPF
+        Task<string> RegisterCNPJAsync(RegisterCNPJRequest request);
+        Task<object> GetDocumentVerificationStatus(string userId);
     }
 }

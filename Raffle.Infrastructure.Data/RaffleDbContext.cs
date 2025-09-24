@@ -60,6 +60,56 @@ namespace Raffle.Infrastructure.Data
                 .HasOne(rc => rc.User)
                 .WithMany(c => c.RaffleClients)
                 .HasForeignKey(rc => rc.UserId);
+
+            // Configure RaffleEntity explicit mapping
+            modelBuilder.Entity<RaffleEntity>(entity =>
+            {
+                entity.ToTable("Raffles");
+                entity.HasKey(e => e.Id);
+
+                // Map properties explicitly to avoid convention conflicts
+                entity.Property(e => e.Id).HasColumnName("Id");
+                entity.Property(e => e.Guid).HasColumnName("Guid");
+                entity.Property(e => e.Title).HasColumnName("Title");
+                entity.Property(e => e.Description).HasColumnName("Description");
+                entity.Property(e => e.Type).HasColumnName("Type").HasConversion<string>();
+                entity.Property(e => e.Images).HasColumnName("Images");
+                entity.Property(e => e.ImageBanner).HasColumnName("ImageBanner").IsRequired(false);
+                entity.Property(e => e.StartDate).HasColumnName("StartDate");
+                entity.Property(e => e.EndDate).HasColumnName("EndDate");
+                entity.Property(e => e.Terms).HasColumnName("Terms");
+                entity.Property(e => e.TicketPrice).HasColumnName("TicketPrice");
+                entity.Property(e => e.MaxTicketPerUser).HasColumnName("MaxTicketPerUser");
+                entity.Property(e => e.MaxParticipants).HasColumnName("MaxParticipants");
+                entity.Property(e => e.PaymentMethod).HasColumnName("PaymentMethod").HasConversion<string>();
+                entity.Property(e => e.IsEnable).HasColumnName("IsEnable");
+                entity.Property(e => e.Status).HasColumnName("Status").HasConversion<string>();
+                entity.Property(e => e.CoverImageUrl).HasColumnName("CoverImageUrl");
+                entity.Property(e => e.TicketsSold).HasColumnName("TicketsSold");
+                entity.Property(e => e.UniqueLink).HasColumnName("UniqueLink");
+                entity.Property(e => e.NumberOfTickets).HasColumnName("NumberOfTickets");
+                entity.Property(e => e.ThemeId).HasColumnName("ThemeId");
+                entity.Property(e => e.UserId).HasColumnName("UserId");
+                entity.Property(e => e.IsEnabled).HasColumnName("IsEnabled");
+                entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt");
+                entity.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt");
+                entity.Property(e => e.SCPCAuthorizationNumber).HasColumnName("SCPCAuthorizationNumber");
+                entity.Property(e => e.SCPCAuthorizationDate).HasColumnName("SCPCAuthorizationDate");
+                entity.Property(e => e.SCPCExpirationDate).HasColumnName("SCPCExpirationDate");
+                entity.Property(e => e.Regulation).HasColumnName("Regulation");
+                entity.Property(e => e.FundraisingPurpose).HasColumnName("FundraisingPurpose");
+                entity.Property(e => e.DrawDate).HasColumnName("DrawDate");
+                entity.Property(e => e.DrawLocation).HasColumnName("DrawLocation");
+                entity.Property(e => e.DrawLiveStreamUrl).HasColumnName("DrawLiveStreamUrl");
+                entity.Property(e => e.IsDrawn).HasColumnName("IsDrawn");
+                entity.Property(e => e.DrawnAt).HasColumnName("DrawnAt");
+                entity.Property(e => e.DrawMinutesUrl).HasColumnName("DrawMinutesUrl");
+                entity.Property(e => e.AccountabilityStatus).HasColumnName("AccountabilityStatus");
+                entity.Property(e => e.AccountabilitySubmittedAt).HasColumnName("AccountabilitySubmittedAt");
+                entity.Property(e => e.AccountabilityDocumentsUrl).HasColumnName("AccountabilityDocumentsUrl");
+                entity.Property(e => e.AccountabilityNotes).HasColumnName("AccountabilityNotes");
+                entity.Property(e => e.LegalWarnings).HasColumnName("LegalWarnings");
+            });
         }
     }
 }

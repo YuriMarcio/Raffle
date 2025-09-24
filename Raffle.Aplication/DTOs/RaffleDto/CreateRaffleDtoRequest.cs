@@ -11,9 +11,9 @@ namespace Raffle.Aplication.DTOs.RaffleDto
 {
     public class CreateRaffleDtoRequest
     {
-        public string Title { get; set; } // Título da rifa
+        public string Title { get; set; } // Título do sorteio promocional
         public string Description { get; set; } // Descrição detalhada
-        public RaffleType Type { get; set; } // Tipo de rifa (enum)
+        public RaffleType Type { get; set; } // Tipo de sorteio promocional (enum)
         public IList<string>? Images { get; set; }
         public string? ImageBanner { get; set; } = null;
 
@@ -29,10 +29,10 @@ namespace Raffle.Aplication.DTOs.RaffleDto
         public int MaxParticipants { get; set; } // Número máximo de participantes
 
         public PaymentMethod PaymentMethod { get; set; } // Método de pagamento aceito
-        public bool IsEnable { get; set; } // Status de habilitação da rifa
+        public bool IsEnable { get; set; } // Status de habilitação do sorteio promocional
 
         // Propriedades adicionais sugeridas
-        public RaffleStatus Status { get; set; } // Status da rifa (enum)
+        public RaffleStatus Status { get; set; } // Status do sorteio promocional (enum)
         public string? CoverImageUrl { get; set; } // URL da imagem de capa
 
 

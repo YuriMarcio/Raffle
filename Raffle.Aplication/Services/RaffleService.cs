@@ -33,7 +33,7 @@ namespace Raffle.Infrastructure.Services
 
         public async Task<CreateRaffleDtoResponse> CreateRaffleAsync(CreateRaffleDtoRequest dtoRequest)
         {
-            // Criação da rifa
+            // Criação do sorteio promocional
             var raffle = new RaffleEntity
             {
                 Id = Guid.NewGuid().ToString(),
@@ -55,7 +55,7 @@ namespace Raffle.Infrastructure.Services
                 UniqueLink = GenerateUniqueLink()
             };
 
-            // Adiciona a rifa ao contexto
+            // Adiciona o sorteio promocional ao contexto
             _context.Raffles.Add(raffle);
             await _context.SaveChangesAsync();
 
@@ -101,9 +101,6 @@ namespace Raffle.Infrastructure.Services
         public async Task<RaffleDto> GetRaffleByIdAsync(string aID)
         {
             var raffle = await _context.Raffles
-                .Include(r => r.Prizes)
-                .Include(r => r.Tickets)
-                .Include(r => r.RaffleClients)
                 .FirstOrDefaultAsync(r => r.Id == aID);
                 
             if (raffle == null)
@@ -122,7 +119,7 @@ namespace Raffle.Infrastructure.Services
                 .FirstOrDefaultAsync(r => r.Id == aID);
                 
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada.");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado.");
 
             // Use AutoMapper for the update
             _mapper.Map(dtoRequest, raffle);
@@ -160,7 +157,7 @@ namespace Raffle.Infrastructure.Services
         {
             var raffle = await _context.Raffles.FindAsync(aID);
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada.");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado.");
 
             _context.Raffles.Remove(raffle);
             await _context.SaveChangesAsync();
@@ -185,7 +182,7 @@ namespace Raffle.Infrastructure.Services
                 .FirstOrDefaultAsync(r => r.UniqueLink == uniqueLink);
 
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado");
 
             var soldTickets = raffle.Tickets.Where(t => t.UserId != null).Select(t => t.Value).ToList();
             var availableTickets = new List<int>();
@@ -205,7 +202,7 @@ namespace Raffle.Infrastructure.Services
         {
             var raffle = await GetByUniqueLinkAsync(uniqueLink);
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado");
 
             var availableTickets = await GetAvailableTicketsByUniqueLinkAsync(uniqueLink);
             var invalidNumbers = ticketNumbers.Where(n => !availableTickets.Contains(n)).ToList();
@@ -233,7 +230,7 @@ namespace Raffle.Infrastructure.Services
         {
             var raffle = await GetByUniqueLinkAsync(uniqueLink);
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado");
 
             var ticket = raffle.Tickets.FirstOrDefault(t => t.Value == ticketNumber);
             if (ticket == null)

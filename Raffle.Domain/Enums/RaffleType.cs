@@ -8,6 +8,15 @@ namespace Raffle.Domain.Enums
 {
     public enum RaffleType
     {
-        winning_ticket = 1
+        Car = 1,
+        Electronic = 2,
+        Property = 3,
+        Travel = 4,
+        Experience = 5,
+        Fashion = 6,
+        Home = 7,
+        Games = 8,
+        Vouchers = 9,
+        Other = 10
     }
 }

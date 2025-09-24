@@ -72,7 +72,7 @@ namespace Raffle.Infrastructure.Services
             {
                 // Log da exceção (dependendo de como você gerencia logs na aplicação)
                 // Log.Error("Erro ao buscar prêmios: ", ex);
-                throw new Exception("Erro ao buscar prêmios para a rifa.", ex);
+                throw new Exception("Erro ao buscar prêmios para o sorteio promocional.", ex);
             }
         }
 
@@ -104,11 +104,11 @@ namespace Raffle.Infrastructure.Services
 
         public async Task<PrizeDtoResponse> AddPrizeToRaffleAsync(string raffleId, CreatePrizeDtoRequest dtoRequest)
         {
-            // Buscar a rifa
+            // Buscar o sorteio promocional
             var raffle = await _raffleRepository.GetByIdAsync(raffleId);
 
             if (raffle == null)
-                throw new KeyNotFoundException("Rifa não encontrada.");
+                throw new KeyNotFoundException("Sorteio promocional não encontrado.");
 
             // Criar o prêmio a partir do DTO
             var prize = new Prize
@@ -136,7 +136,7 @@ namespace Raffle.Infrastructure.Services
         {
             var prize = await _prizeRepository.GetByIdAsync(prizeId);
             if (prize == null || prize.RaffleId != raffleId)
-                throw new KeyNotFoundException("Prêmio ou rifa não encontrada.");
+                throw new KeyNotFoundException("Prêmio ou sorteio promocional não encontrado.");
 
             await _prizeRepository.DeleteAsync(prizeId);
         }
@@ -145,7 +145,7 @@ namespace Raffle.Infrastructure.Services
         {
             var prize = await _prizeRepository.GetByIdAsync(prizeId);
             if (prize == null || prize.RaffleId != raffleId)
-                throw new KeyNotFoundException("Prêmio ou rifa não encontrada.");
+                throw new KeyNotFoundException("Prêmio ou sorteio promocional não encontrado.");
 
             prize.Title = dtoRequest.Title;
             prize.Description = dtoRequest.Description;

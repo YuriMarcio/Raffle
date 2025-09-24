@@ -69,7 +69,7 @@ namespace Raffle.Domain.Entities
         public PrizeType Type { get; set; }
 
         /// <summary>
-        /// Identificador da rifa associada ao prêmio (opcional).
+        /// Identificador do sorteio promocional associado ao prêmio (opcional).
         /// </summary>
         public string? RaffleId { get; set; }
     }

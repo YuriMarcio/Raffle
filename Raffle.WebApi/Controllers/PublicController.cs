@@ -26,7 +26,7 @@ namespace Raffle.WebApi.Controllers
                 var raffle = await _raffleService.GetByUniqueLinkAsync(uniqueLink);
                 if (raffle == null)
                 {
-                    return NotFound("Rifa não encontrada");
+                    return NotFound("Sorteio promocional não encontrado");
                 }
 
                 return Ok(raffle);
